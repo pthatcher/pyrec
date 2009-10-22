@@ -1,6 +1,11 @@
-If you need immutable data structures (and if you're doing anything
-with concurrency, you probably do), then "pyrec" is for you.  Just
-include it in your source code and "from Record import Record.py"
-
 see examples.py
 
+pyrec (Record.py) let's you:
+
+* Easily build immutable data structures
+* Use more declerative-style programming
+* Never have to write __init__ (for records, at least)
+* Avoid concurrency bugs
+* Reduce memory consumption when dealing with lots of objects
+
+All in once easy-to-include source file.  Just "from Record import Record"
