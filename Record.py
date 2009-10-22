@@ -91,6 +91,23 @@ def upper_first(string):
     return string[0].upper() + string[1:]
     
 
+class LinkedList(Record("first", "rest")):
+    def __new__(cls, first, rest = None):
+        return cls.new(first, rest)
+
+    def __getitem__(self, index):
+        return iget(self, index)
+
+    def __iter__(rest):
+        while True:
+            first, rest = rest.values
+            yield first
+            if rest is None:
+                raise StopIteration
+
+    def cons(self, value):
+        return self.new(value, self)
+
 if __name__ == "__main__":
     # tests
     def err(code, err_type = Exception):
@@ -133,23 +150,6 @@ if __name__ == "__main__":
         except StopIteration:
             raise IndexError
     
-    class LinkedList(Record("first", "rest")):
-        def __new__(cls, first, rest = None):
-            return cls.new(first, rest)
-
-        def __getitem__(self, index):
-            return iget(self, index)
-
-        def __iter__(rest):
-            while True:
-                first, rest = rest.values
-                yield first
-                if rest is None:
-                    raise StopIteration
-
-        def cons(self, value):
-            return self.new(value, self)
-
                     
     names1  = LinkedList("alice")
     names2  = names1.cons("bob")
