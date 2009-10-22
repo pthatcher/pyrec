@@ -1,0 +1,6 @@
+If you need immutable data structures (and if you're doing anything
+with concurrency, you probably do), then "pyrec" is for you.  Just
+include it in your source code and "from Record import Record.py"
+
+see examples.py
+
