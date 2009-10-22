@@ -1,23 +1,29 @@
 from Record import Record
 
-# Hello, World!
-# step 1. Make a record
-# step 2. Override __str__
+# step 0. Make a record
 
-class FancyMessage(Record("salutation", "recipient")):
+class SalutationMessage(Record("salutation", "recipient")):
+    pass
+
+msg = SalutationMessage("Hello", "World")
+print "%s, %s!" % (msg.salutation, msg.recipient)
+
+
+# step 1. Override __str__
+
+class EasySalutationMessage(SalutationMessage):
    def __str__(self):
       return "%s, %s!" % self
 
-print FancyMessage("Hello", "World")
+print EasySalutationMessage("Hello", "World")
 
-# step 3. Override __new__ (not __init__!) to provide defaults
-# step 4. Learn to use setXYZ() and alter()
+# step 2. Override __new__ (not __init__!) to provide defaults
+# step 3. Learn to use setXYZ() and alter()
 
-class MessageToWorld(FancyMessage):
+class MessageToWorld(EasySalutationMessage):
     def __new__(cls, salutation = "Hello", recipient = "World"):
         return cls.new(salutation, recipient)
 
-print MessageToWorld()
 print MessageToWorld("Goodbye").setRecipient("Nation")
 print MessageToWorld("Goodbye", "Nation").alter(salutation = "Hello", recipient = "World")
 
