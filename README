@@ -1,5 +1,3 @@
-see examples.py
-
 pyrec (Record.py) let's you:
 
 * Easily build immutable data structures
@@ -9,3 +7,9 @@ pyrec (Record.py) let's you:
 * Reduce memory consumption when dealing with lots of objects
 
 All in once easy-to-include source file.  Just "from Record import Record"
+
+see examples.py
+
+But be careful, once you get hooked on Record, you'll use it
+everywhere.  Python will never be the same to you.
+
