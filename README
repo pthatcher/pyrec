@@ -13,3 +13,45 @@ see examples.py
 But be careful, once you get hooked on Record, you'll use it
 everywhere.  Python will never be the same to you.
 
+
+
+UPDATE: Some have asked: "how is Record.py different from
+collection.namedtuple?".  You could view this as an improvement on
+collection.namedtuple.  Record.py actually existed before namedtuple,
+and I've learned a few things in the years I've been using it.  Here
+are some advantages to Record.py that have been important to me the
+last few years:
+
+
+1. It has a nicer interface. I prefer new(val1, val2) to _make([val1,
+val2]), alter to _update, and class Person(Record("name", "age")) to
+Person = namedtuple("Person", "name, age")
+
+2. I added the setField methods. That's what I use 90% of the
+time. Only about 10% of the time do I use alter. setField is a lot
+more convenient.
+
+3. With pyrec, you can safely override __iter__ and __getitem__. For
+example, in Record.py, you'll see the implementation of a
+LinkedList. I tried doing that with namedtuple, but the overidden
+__getitem__ clobers the name lookup and __iter__ clobers tuple
+unpacking.  
+
+4. pyrec has .namedValues for ordered (field, value) pairs, unlike
+_asdict() which throws out the order. Minor thing, but it's nice.
+
+5. You can improve it! Have looked at the code for namedtuple?
+Ugly. This is pretty clean, so you can improve it very easily if you
+need additional functionality which will work with all of your
+records.  In particular, the version of pyrec I use has some custom
+serialization stuff added to it, which is very handy.  Good luck
+adding something like that to namedtuple.
+
+
+If you don't think that's compelling, go ahead and used namedtuple.
+It's still immutable, usees less memory, doesn't require __init__, and
+avoids concurrency bugs.  pyrec is just easier to use.
+
+If you want most of the good stuff but still want to use namedtuples,
+I added NamedTuple.py which works almost exactly like Record but is a
+subclass of namedtuple.  You still can't override __getitem__, though.
