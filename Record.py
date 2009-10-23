@@ -48,7 +48,6 @@ class RecordBase(tuple):
     def values(self):
         return islice(tuple.__iter__(self), len(self.SLOTS))
 
-
     def __repr__(self):
         return self.__class__.__name__ + repr(tuple(self.values))
 
@@ -56,6 +55,19 @@ class RecordBase(tuple):
         return self.new(*(value_by_slot.get(self.SLOTS[index], value)
                           for index, value
                           in enumerate(self.values)))
+
+    @property
+    def namedValues(self):
+        return ((self.SLOTS[index], value) for (index, value) in enumerate(self.values))
+
+    @classmethod
+    def fromNamedValues(cls, named_values):
+        return cls.fromDict(dict(named_values))
+
+    @classmethod
+    def fromDict(cls, dct, default = None):
+        return cls.new(*(dct.get(slot, default) for slot in cls.SLOTS))
+        
 
     def getByIndex(self, index):
         return tuple.__getitem__(self, index)
@@ -129,8 +141,11 @@ if __name__ == "__main__":
     assert peter[1]            == age
     assert tuple(peter.values) == (name, age)
     assert tuple(peter)        == (name, age)
+    assert list(peter.namedValues) == [("name", name), ("age", age)]
     assert peter               == Person("peter", 25)
     assert repr(peter)         == "Person('peter', 25)"
+    assert peter               == Person.fromNamedValues(peter.namedValues)
+    assert peter               == Person.fromDict(dict(peter.namedValues))
     assert err(lambda : peter.height, AttributeError)
     assert err(lambda : peter[2],     IndexError)
     assert err(lambda : Person())
@@ -165,3 +180,5 @@ if __name__ == "__main__":
     assert err(lambda : names3[3], IndexError)
 
     assert (names3.first, list(names3.rest)) == ("charlie", ["bob", "alice"])
+
+    print "passed!"
