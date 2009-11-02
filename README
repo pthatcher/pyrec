@@ -27,8 +27,8 @@ last few years:
 val2]), alter to _update, and class Person(Record("name", "age")) to
 Person = namedtuple("Person", "name, age")
 
-2. I added the setField methods. That's what I use 90% of the
-time. Only about 10% of the time do I use alter. setField is a lot
+2. I added the set_field methods. That's what I use 90% of the
+time. Only about 10% of the time do I use alter. set_field is a lot
 more convenient.
 
 3. With pyrec, you can safely override __iter__ and __getitem__. For

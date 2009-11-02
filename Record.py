@@ -22,7 +22,7 @@ def Record(*slots):
     class cls(RecordBase):
         pass
 
-    cls.setSlots(slots)
+    cls.set_slots(slots)
 
     return cls
 
@@ -57,22 +57,22 @@ class RecordBase(tuple):
                           in enumerate(self.values)))
 
     @property
-    def namedValues(self):
+    def named_values(self):
         return ((self.SLOTS[index], value) for (index, value) in enumerate(self.values))
 
     @classmethod
-    def fromNamedValues(cls, named_values):
-        return cls.fromDict(dict(named_values))
+    def from_named_values(cls, named_values):
+        return cls.from_dict(dict(named_values))
 
     @classmethod
-    def fromDict(cls, dct, default = None):
+    def from_dict(cls, dct, default = None):
         return cls.new(*(dct.get(slot, default) for slot in cls.SLOTS))
         
 
-    def getByIndex(self, index):
+    def get_by_index(self, index):
         return tuple.__getitem__(self, index)
 
-    def setByIndex(self, set_index, set_value):
+    def set_by_index(self, set_index, set_value):
         return self.new(*(set_value if set_index == index else value
                           for (index, value)
                           in enumerate(self.values)))
@@ -80,19 +80,19 @@ class RecordBase(tuple):
 
     ## setting up getters and setters
     @classmethod
-    def setSlots(cls, slots):
+    def set_slots(cls, slots):
         cls.SLOTS = slots
         for index, slot in enumerate(slots):
-            setattr(cls, slot,                      property(cls.makeGetter(index)))
-            setattr(cls, "set" + upper_first(slot), cls.makeSetter(index))
+            setattr(cls, slot, property(cls.make_getter(index)))
+            setattr(cls, "set_" + slot, cls.make_setter(index))
 
     @classmethod
-    def makeGetter(cls, index):
-        return lambda self : self.getByIndex(index)
+    def make_getter(cls, index):
+        return lambda self : self.get_by_index(index)
 
     @classmethod
-    def makeSetter(cls, index):
-        return lambda self, value: self.setByIndex(index, value)
+    def make_setter(cls, index):
+        return lambda self, value: self.set_by_index(index, value)
 
     ## for Pickling
 
@@ -141,20 +141,20 @@ if __name__ == "__main__":
     assert peter[1]            == age
     assert tuple(peter.values) == (name, age)
     assert tuple(peter)        == (name, age)
-    assert list(peter.namedValues) == [("name", name), ("age", age)]
+    assert list(peter.named_values) == [("name", name), ("age", age)]
     assert peter               == Person("peter", 25)
     assert repr(peter)         == "Person('peter', 25)"
-    assert peter               == Person.fromNamedValues(peter.namedValues)
-    assert peter               == Person.fromDict(dict(peter.namedValues))
+    assert peter               == Person.from_named_values(peter.named_values)
+    assert peter               == Person.from_dict(dict(peter.named_values))
     assert err(lambda : peter.height, AttributeError)
     assert err(lambda : peter[2],     IndexError)
     assert err(lambda : Person())
     assert err(lambda : Person("peter"))
 
     assert peter.alter(age = 29) == Person(name, 29)
-    assert peter.setAge(29)      == Person(name, 29)
+    assert peter.set_age(29)    == Person(name, 29)
     assert peter.alter(name = "grandpa", age = 99) == Person("grandpa", 99)
-    assert peter.setName("grandpa").setAge(99)     == Person("grandpa", 99)
+    assert peter.set_name("grandpa").set_age(99)   == Person("grandpa", 99)
 
     def iget(itr, index):
         try:

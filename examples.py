@@ -18,13 +18,13 @@ class EasySalutationMessage(SalutationMessage):
 print EasySalutationMessage("Hello", "World")
 
 # step 2. Override __new__ (not __init__!) to provide defaults
-# step 3. Learn to use setXYZ() and alter()
+# step 3. Learn to use set_xyz() and alter()
 
 class MessageToWorld(EasySalutationMessage):
     def __new__(cls, salutation = "Hello", recipient = "World"):
         return cls.new(salutation, recipient)
 
-print MessageToWorld("Goodbye").setRecipient("Nation")
+print MessageToWorld("Goodbye").set_recipient("Nation")
 print MessageToWorld("Goodbye", "Nation").alter(salutation = "Hello", recipient = "World")
 
 
